@@ -12,7 +12,6 @@ public class vendTest {
 		vender = new VendingMachine();
 		vender.init();
 	}
-
 	
 	@Test
 	public void whenVendingMachineIsCheckedItDoesSomething(){
@@ -23,6 +22,14 @@ public class vendTest {
 	public void vendingMachineAcceptsCoinsAndDisplaysValue(){
 		//Machine accepts coin based on weight in milligrams
 		vender.insertCoin(5670);
-		assertEquals("25", vender.check());
+		assertEquals("$0.25", vender.check());
+	}
+	
+	@Test
+	public void vendingMachineDisplaysTotalCoinValueAndInCorrectForm(){
+		vender.insertCoin(5670);
+		vender.insertCoin(5000);
+		vender.insertCoin(2268);
+		assertEquals("$0.40", vender.check());
 	}
 }

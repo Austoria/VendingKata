@@ -1,11 +1,13 @@
 package vendingSrc;
 
+import java.text.NumberFormat;
 import java.util.*;
 
 public class VendingMachine {
 	int value;
 	HashMap<Integer, Integer> coins = new HashMap <Integer, Integer>();
 	HashMap<Integer, Integer> values = new HashMap <Integer, Integer>();
+	
 	public void init() {
 		values.put(5670, 25);
 		values.put(5000, 5);
@@ -15,7 +17,7 @@ public class VendingMachine {
 	public String check() {
 		String display = "INSERT COIN";
 		if (value > 0)
-			return String.valueOf(value);
+			return displayAsCurrency(value);
 		return display;
 	}
 
@@ -26,6 +28,12 @@ public class VendingMachine {
 			coins.put(weight, coins.get(weight)+1);
 		value += values.get(weight);
 	}
-
 	
+	public String displayAsCurrency(int vendTotal) {
+		String price = null;
+		double decimalTotal = ((double)vendTotal)/100;
+		NumberFormat formatter = NumberFormat.getCurrencyInstance();
+		price = formatter.format(decimalTotal);
+		return price;
+	}
 }
