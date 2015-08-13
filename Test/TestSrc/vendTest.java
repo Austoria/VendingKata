@@ -1,11 +1,18 @@
 package TestSrc;
 
 import static org.junit.Assert.*;
-import org.junit.Test;
+import org.junit.*;
 import vendingSrc.VendingMachine;
 
 public class vendTest {
-	VendingMachine vender = new VendingMachine();
+	VendingMachine vender;
+	
+	@Before
+	public void setUp(){
+		vender = new VendingMachine();
+		vender.init();
+	}
+
 	
 	@Test
 	public void whenVendingMachineIsCheckedItDoesSomething(){
