@@ -42,8 +42,15 @@ public class vendTest {
 		vender.insertCoin(300);
 		HashMap<Integer, Integer> pocket = new HashMap<Integer, Integer>();
 		pocket.putAll(vender.checkCoinReturn());
-		vender.clearCoinReturn();
+		(vender.checkCoinReturn()).clear();
 		assertEquals(3, pocket.size());
 		assertEquals(0, (vender.checkCoinReturn()).size());
+	}
+	
+	@Test
+	public void vendingMachineHasAnInventory(){
+		assertEquals("$1.00", vender.checkInventory("Cola"));
+		assertEquals("$0.50", vender.checkInventory("Chips"));
+		assertEquals("$0.65", vender.checkInventory("Candy"));
 	}
 }

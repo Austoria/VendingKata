@@ -9,6 +9,7 @@ public class VendingMachine {
 	HashMap<Integer, Integer> coins = new HashMap <Integer, Integer>(); //Count of coins inserted
 	HashMap<Integer, Integer> values = new HashMap <Integer, Integer>(); //Value of coins inserted
 	HashMap<Integer, Integer> coinReturn = new HashMap <Integer, Integer>(); //Count of coins in coin return
+	HashMap<String, Integer> inventory = new HashMap <String, Integer>(); //Inventory items and price
 	
 	public void init() {
 		//Initialize HashMap for US Currency, change key weight and value (values only) for foreign currencies
@@ -18,6 +19,9 @@ public class VendingMachine {
 		values.put(5670, 25);
 		values.put(5000, 5);
 		values.put(2268, 10);
+		inventory.put("Cola", 100);
+		inventory.put("Chips", 50);
+		inventory.put("Candy", 65);
 	}
 	
 	public String check() {
@@ -52,7 +56,7 @@ public class VendingMachine {
 		return coinReturn;
 	}
 
-	public void clearCoinReturn() {
-		coinReturn.clear();
+	public String checkInventory(String choice){
+		return displayAsCurrency(inventory.get(choice));
 	}
 }
