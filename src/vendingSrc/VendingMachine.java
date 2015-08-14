@@ -13,6 +13,7 @@ public class VendingMachine {
 	HashMap<Integer, Integer> values = new HashMap <Integer, Integer>(); //Value of coins inserted
 	HashMap<Integer, Integer> coinReturn = new HashMap <Integer, Integer>(); //Count of coins in coin return
 	HashMap<String, Integer> inventory = new HashMap <String, Integer>(); //Inventory items and price
+	HashMap<String, Integer> invQuant = new HashMap <String, Integer>(); //Inventory items and quantity
 	HashMap<String, Integer> dispensor = new HashMap <String, Integer>(); //Dispensed items will be placed here
 	
 	public void init() {
@@ -26,6 +27,9 @@ public class VendingMachine {
 		inventory.put("Cola", 100);
 		inventory.put("Chips", 50);
 		inventory.put("Candy", 65);
+		invQuant.put("Cola", 2);
+		invQuant.put("Chips", 2);
+		invQuant.put("Candy", 2);
 	}
 	
 	public String check() {
@@ -65,15 +69,18 @@ public class VendingMachine {
 	}
 	
 	public String vend(String choice){
-		if (value >= inventory.get(choice)) {
+		if ((value >= inventory.get(choice)) && (invQuant.get(choice)>0)) {
 			if (dispensor.containsKey(choice))
 				dispensor.put(choice, dispensor.get(choice)+1);
 			else
 				dispensor.put(choice, 1);
 			value -= inventory.get(choice);
+			invQuant.put(choice, invQuant.get(choice)-1);
 			makeChange();
 			return "THANK YOU";
 		}
+		else if(invQuant.get(choice) == 0)
+			return "SOLD OUT";
 		else
 			return displayAsCurrency(inventory.get(choice));
 	}

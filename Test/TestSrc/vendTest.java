@@ -101,4 +101,19 @@ public class vendTest {
 		assertEquals(1, dimes);
 		assertEquals(1, nickels);
 	}
+	
+	@Test
+	public void ifSoldOutDisplaySoldOutAndAllowForNewChoice(){
+		vender.insertCoin(5670);
+		vender.insertCoin(5670);
+		assertEquals("THANK YOU", vender.vend("Chips"));
+		vender.insertCoin(5670);
+		vender.insertCoin(5670);
+		assertEquals("THANK YOU", vender.vend("Chips"));
+		vender.insertCoin(5670);
+		vender.insertCoin(5670);
+		vender.insertCoin(5670);
+		assertEquals("SOLD OUT", vender.vend("Chips"));
+		assertEquals("THANK YOU", vender.vend("Candy"));
+	}
 }
