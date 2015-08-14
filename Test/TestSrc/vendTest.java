@@ -83,6 +83,22 @@ public class vendTest {
 		assertEquals(0, quarters);
 		assertEquals(1, dimes);
 		assertEquals(1, nickels);
-		
+	}
+	
+	@Test
+	public void returnsCoinsWhenUserPressesReturnCoin(){
+		vender.insertCoin(5670);
+		vender.insertCoin(2268);
+		vender.insertCoin(5000);
+		vender.returnCoins();
+		assertEquals("INSERT COIN", vender.check());
+		HashMap<Integer, Integer> pocket = new HashMap<Integer, Integer>();
+		pocket.putAll(vender.checkCoinReturn());
+		int quarters = pocket.get(5670);
+		int dimes = pocket.get(2268);
+		int nickels = pocket.get(5000);
+		assertEquals(1, quarters);
+		assertEquals(1, dimes);
+		assertEquals(1, nickels);
 	}
 }

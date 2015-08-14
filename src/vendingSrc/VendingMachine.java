@@ -100,6 +100,10 @@ public class VendingMachine {
 			coinReturn.put(nickel, nickelsToReturn);
 		value = 0;
 	}
+	
+	public void returnCoins(){
+		makeChange();
+	}
 
 	public HashMap<String, Integer> checkDispensor(){
 		return dispensor;
