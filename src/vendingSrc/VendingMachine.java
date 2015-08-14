@@ -5,6 +5,9 @@ import java.util.*;
 
 public class VendingMachine {
 	int value;
+	int quarter = 5670;
+	int dime = 2268;
+	int nickel = 5000;
 	//Vending machine has three HashMaps to represent coin totals and values and one for coin return
 	HashMap<Integer, Integer> coins = new HashMap <Integer, Integer>(); //Count of coins inserted
 	HashMap<Integer, Integer> values = new HashMap <Integer, Integer>(); //Value of coins inserted
@@ -14,12 +17,12 @@ public class VendingMachine {
 	
 	public void init() {
 		//Initialize HashMap for US Currency, change key weight and value (values only) for foreign currencies
-		coins.put(5670, 0);
-		coins.put(5000, 0);
-		coins.put(2268, 0);
-		values.put(5670, 25);
-		values.put(5000, 5);
-		values.put(2268, 10);
+		coins.put(quarter, 0);
+		coins.put(dime, 0);
+		coins.put(nickel, 0);
+		values.put(quarter, 25);
+		values.put(nickel, 5);
+		values.put(dime, 10);
 		inventory.put("Cola", 100);
 		inventory.put("Chips", 50);
 		inventory.put("Candy", 65);
@@ -45,7 +48,7 @@ public class VendingMachine {
 		}
 	}
 	
-	public String displayAsCurrency(int vendTotal) {
+	private String displayAsCurrency(int vendTotal) {
 		String price = null;
 		double decimalTotal = ((double)vendTotal)/100;
 		NumberFormat formatter = NumberFormat.getCurrencyInstance();
@@ -68,12 +71,36 @@ public class VendingMachine {
 			else
 				dispensor.put(choice, 1);
 			value -= inventory.get(choice);
+			makeChange();
 			return "THANK YOU";
 		}
 		else
 			return displayAsCurrency(inventory.get(choice));
 	}
 	
+	private void makeChange() {
+		
+		int quartersToReturn = value/(values.get(quarter));
+		int dimesToReturn = (value%values.get(quarter))/(values.get(dime));
+		int nickelsToReturn = ((value % values.get(quarter)) % values.get(dime)) / values.get(nickel);			
+		
+		if (coinReturn.containsKey(quarter))
+			coinReturn.put(quarter, coinReturn.get(quarter)+quartersToReturn);
+		else
+			coinReturn.put(quarter, quartersToReturn);
+		
+		if (coinReturn.containsKey(dime))
+			coinReturn.put(dime, coinReturn.get(dime)+dimesToReturn);
+		else
+			coinReturn.put(dime, dimesToReturn);
+		
+		if (coinReturn.containsKey(nickel))
+			coinReturn.put(nickel, coinReturn.get(nickel)+nickelsToReturn);
+		else
+			coinReturn.put(nickel, nickelsToReturn);
+		value = 0;
+	}
+
 	public HashMap<String, Integer> checkDispensor(){
 		return dispensor;
 	} 

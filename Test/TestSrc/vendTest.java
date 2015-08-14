@@ -66,4 +66,23 @@ public class vendTest {
 		assertEquals(1, (vender.checkDispensor()).size());
 		assertEquals(true, (vender.checkDispensor()).containsKey("Cola"));
 	}
+	
+	@Test
+	public void returnsChangeWhenThereIsMoneyRemainingAfterPurchase(){
+		vender.insertCoin(5670);
+		vender.insertCoin(5670);
+		vender.insertCoin(2268);
+		vender.insertCoin(2268);
+		vender.insertCoin(2268);
+		assertEquals("THANK YOU", vender.vend("Candy"));
+		HashMap<Integer, Integer> pocket = new HashMap<Integer, Integer>();
+		pocket.putAll(vender.checkCoinReturn());
+		int quarters=pocket.get(5670);
+		int dimes=pocket.get(2268);
+		int nickels=pocket.get(5000);
+		assertEquals(0, quarters);
+		assertEquals(1, dimes);
+		assertEquals(1, nickels);
+		
+	}
 }
