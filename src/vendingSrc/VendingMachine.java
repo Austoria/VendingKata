@@ -10,6 +10,7 @@ public class VendingMachine {
 	HashMap<Integer, Integer> values = new HashMap <Integer, Integer>(); //Value of coins inserted
 	HashMap<Integer, Integer> coinReturn = new HashMap <Integer, Integer>(); //Count of coins in coin return
 	HashMap<String, Integer> inventory = new HashMap <String, Integer>(); //Inventory items and price
+	HashMap<String, Integer> dispensor = new HashMap <String, Integer>(); //Dispensed items will be placed here
 	
 	public void init() {
 		//Initialize HashMap for US Currency, change key weight and value (values only) for foreign currencies
@@ -59,4 +60,21 @@ public class VendingMachine {
 	public String checkInventory(String choice){
 		return displayAsCurrency(inventory.get(choice));
 	}
+	
+	public String vend(String choice){
+		if (value >= inventory.get(choice)) {
+			if (dispensor.containsKey(choice))
+				dispensor.put(choice, dispensor.get(choice)+1);
+			else
+				dispensor.put(choice, 1);
+			value -= inventory.get(choice);
+			return "THANK YOU";
+		}
+		else
+			return displayAsCurrency(inventory.get(choice));
+	}
+	
+	public HashMap<String, Integer> checkDispensor(){
+		return dispensor;
+	} 
 }

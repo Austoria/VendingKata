@@ -53,4 +53,17 @@ public class vendTest {
 		assertEquals("$0.50", vender.checkInventory("Chips"));
 		assertEquals("$0.65", vender.checkInventory("Candy"));
 	}
+
+	
+	@Test
+	public void userSelectionIsVendedIfPaymentIsSufficientOtherwisePriceDisplayed(){
+		assertEquals("$1.00", vender.vend("Cola"));
+		vender.insertCoin(5670);
+		vender.insertCoin(5670);
+		vender.insertCoin(5670);
+		vender.insertCoin(5670);
+		assertEquals("THANK YOU", vender.vend("Cola"));
+		assertEquals(1, (vender.checkDispensor()).size());
+		assertEquals(true, (vender.checkDispensor()).containsKey("Cola"));
+	}
 }
