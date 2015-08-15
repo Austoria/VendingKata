@@ -41,9 +41,11 @@ public class vendTest {
 
 	@Test
 	public void rejectedCoinsArePlacedInCoinReturn(){
+		//Test invalid coins by inserting non-accepted coin weights
 		vender.insertCoin(6000);
 		vender.insertCoin(50);
 		vender.insertCoin(300);
+		//Create user pocket, copy coins returned into pocket, clear coinReturn
 		HashMap<Integer, Integer> pocket = new HashMap<Integer, Integer>();
 		pocket.putAll(vender.checkCoinReturn());
 		(vender.checkCoinReturn()).clear();
@@ -53,6 +55,7 @@ public class vendTest {
 	
 	@Test
 	public void vendingMachineHasAnInventory(){
+		//checkInventory was only used to test inventory before vend function existed
 		assertEquals("$1.00", vender.checkInventory("Cola"));
 		assertEquals("$0.50", vender.checkInventory("Chips"));
 		assertEquals("$0.65", vender.checkInventory("Candy"));
