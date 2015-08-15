@@ -7,6 +7,10 @@ import org.junit.*;
 import vendingSrc.VendingMachine;
 
 public class vendTest {
+	//coin weights in milligrams for easy reading
+	int quarter = 5670;
+	int dime = 2268;
+	int nickel = 5000;
 	VendingMachine vender;
 	
 	@Before
@@ -23,15 +27,15 @@ public class vendTest {
 	@Test
 	public void vendingMachineAcceptsCoinsAndDisplaysValue(){
 		//Machine accepts coin based on weight in milligrams (5670->Quarters, 2268->Dimes, 5000->nickels)
-		vender.insertCoin(5670);
+		vender.insertCoin(quarter);
 		assertEquals("$0.25", vender.check());
 	}	
 	
 	@Test
 	public void vendingMachineDisplaysTotalCoinValueAndInCorrectForm(){
-		vender.insertCoin(5670);
-		vender.insertCoin(5000);
-		vender.insertCoin(2268);
+		vender.insertCoin(quarter);
+		vender.insertCoin(nickel);
+		vender.insertCoin(dime);
 		assertEquals("$0.40", vender.check());
 	}
 
@@ -58,10 +62,10 @@ public class vendTest {
 	@Test
 	public void userSelectionIsVendedIfPaymentIsSufficientOtherwisePriceDisplayed(){
 		assertEquals("$1.00", vender.vend("Cola"));
-		vender.insertCoin(5670);
-		vender.insertCoin(5670);
-		vender.insertCoin(5670);
-		vender.insertCoin(5670);
+		vender.insertCoin(quarter);
+		vender.insertCoin(quarter);
+		vender.insertCoin(quarter);
+		vender.insertCoin(quarter);
 		assertEquals("THANK YOU", vender.vend("Cola"));
 		assertEquals(1, (vender.checkDispensor()).size());
 		assertEquals(true, (vender.checkDispensor()).containsKey("Cola"));
@@ -69,17 +73,17 @@ public class vendTest {
 	
 	@Test
 	public void returnsChangeWhenThereIsMoneyRemainingAfterPurchase(){
-		vender.insertCoin(5670);
-		vender.insertCoin(5670);
-		vender.insertCoin(2268);
-		vender.insertCoin(2268);
-		vender.insertCoin(2268);
+		vender.insertCoin(quarter);
+		vender.insertCoin(quarter);
+		vender.insertCoin(dime);
+		vender.insertCoin(dime);
+		vender.insertCoin(dime);
 		assertEquals("THANK YOU", vender.vend("Candy"));
 		HashMap<Integer, Integer> pocket = new HashMap<Integer, Integer>();
 		pocket.putAll(vender.checkCoinReturn());
-		int quarters=pocket.get(5670);
-		int dimes=pocket.get(2268);
-		int nickels=pocket.get(5000);
+		int quarters=pocket.get(quarter);
+		int dimes=pocket.get(dime);
+		int nickels=pocket.get(nickel);
 		assertEquals(0, quarters);
 		assertEquals(1, dimes);
 		assertEquals(1, nickels);
@@ -87,16 +91,16 @@ public class vendTest {
 	
 	@Test
 	public void returnsCoinsWhenUserPressesReturnCoin(){
-		vender.insertCoin(5670);
-		vender.insertCoin(2268);
-		vender.insertCoin(5000);
+		vender.insertCoin(quarter);
+		vender.insertCoin(dime);
+		vender.insertCoin(nickel);
 		vender.returnCoins();
 		assertEquals("INSERT COIN", vender.check());
 		HashMap<Integer, Integer> pocket = new HashMap<Integer, Integer>();
 		pocket.putAll(vender.checkCoinReturn());
-		int quarters = pocket.get(5670);
-		int dimes = pocket.get(2268);
-		int nickels = pocket.get(5000);
+		int quarters = pocket.get(quarter);
+		int dimes = pocket.get(dime);
+		int nickels = pocket.get(nickel);
 		assertEquals(1, quarters);
 		assertEquals(1, dimes);
 		assertEquals(1, nickels);
@@ -104,16 +108,31 @@ public class vendTest {
 	
 	@Test
 	public void ifSoldOutDisplaySoldOutAndAllowForNewChoice(){
-		vender.insertCoin(5670);
-		vender.insertCoin(5670);
+		vender.insertCoin(quarter);
+		vender.insertCoin(quarter);
 		assertEquals("THANK YOU", vender.vend("Chips"));
-		vender.insertCoin(5670);
-		vender.insertCoin(5670);
+		vender.insertCoin(quarter);
+		vender.insertCoin(quarter);
 		assertEquals("THANK YOU", vender.vend("Chips"));
-		vender.insertCoin(5670);
-		vender.insertCoin(5670);
-		vender.insertCoin(5670);
+		vender.insertCoin(quarter);
+		vender.insertCoin(quarter);
+		vender.insertCoin(quarter);
 		assertEquals("SOLD OUT", vender.vend("Chips"));
 		assertEquals("THANK YOU", vender.vend("Candy"));
+	}
+	
+	@Test
+	public void ifVendingMachineCannotMakeChangeForAnyItemDisplaysExactChangeOnly(){
+		vender.emptyMachinesCoins();
+		assertEquals("EXACT CHANGE ONLY", vender.check());
+		vender.insertCoin(quarter);
+		vender.insertCoin(quarter);
+		vender.insertCoin(quarter);
+		assertEquals("NOT EXACT CHANGE", vender.vend("Candy"));
+		vender.insertCoin(quarter);
+		vender.insertCoin(quarter);
+		assertEquals("THANK YOU", vender.vend("Chips"));
+		vender.fillMachinesCoins();
+		assertEquals("INSERT COIN", vender.check());
 	}
 }
